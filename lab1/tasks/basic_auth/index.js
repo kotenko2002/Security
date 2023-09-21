@@ -4,18 +4,19 @@ const port = 3000;
 
 app.use((req, res, next) => {
   console.log("\n=======================================================\n");
-  debugger;
+
   const authorizationHeader = req.get("Authorization");
   console.log("authorizationHeader", authorizationHeader);
 
   if (!authorizationHeader) {
-    res.setHeader("WWW-Authenticate", 'Basic realm="Ukraine"');
+    res.setHeader("WWW-Authenticate", 'Basic realm="Ukraine"'); // realm/promt
     res.status(401);
-    res.send("Unauthorized2");
+    res.send("Unauthorized");
     return;
   }
 
   const authorizationBase64Part = authorizationHeader.split(" ")[1];
+  console.log("authorizationBase64Part", authorizationBase64Part);
 
   const decodedAuthorizationHeader = Buffer.from(
     authorizationBase64Part,
@@ -27,7 +28,7 @@ app.use((req, res, next) => {
   const password = decodedAuthorizationHeader.split(":")[1];
   console.log("Login/Password", login, password);
 
-  if (login == "DateArt" && password == "2408") {
+  if (login == "login" && password == "1111") {
     req.login = login;
     return next();
   }

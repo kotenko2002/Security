@@ -22,7 +22,7 @@ class Session {
       this.#sessions = fs.readFileSync("./sessions.json", "utf8");
       this.#sessions = JSON.parse(this.#sessions.trim());
 
-      console.log(this.#sessions);
+      console.log("sessions:", this.#sessions);
     } catch (e) {
       this.#sessions = {};
     }
@@ -78,9 +78,11 @@ app.use((req, res, next) => {
       sessionId = sessions.init(res);
     }
   } else {
+    console.log("sessions.init");
     sessionId = sessions.init(res);
   }
 
+  console.log("currentSession", currentSession);
   req.session = currentSession;
   req.sessionId = sessionId;
 
@@ -94,7 +96,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  console.log(req.session);
+  console.log("req.session:", req.session);
 
   if (req.session.username) {
     return res.json({
@@ -112,14 +114,14 @@ app.get("/logout", (req, res) => {
 
 const users = [
   {
-    login: "Login",
-    password: "Password",
+    login: "login",
+    password: "1111",
     username: "Username",
   },
   {
-    login: "Login1",
-    password: "Password1",
-    username: "Username1",
+    login: "kotenko2002",
+    password: "1111",
+    username: "Dmytro Kotenko",
   },
 ];
 
