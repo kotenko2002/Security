@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login</title>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <main>
+            <h1>Login</h1>
+            <div class="form-container">
+                <form id="login-form">
+                    <input id="username" type="text" placeholder="Username" />
+                    <input id="password" type="text" placeholder="Password" />
+                    <p id="login-error-msg">Invalid username or password</p>
+                </form>
+            </div>
+            <div class="buttons">
+                <button id="login-button">Login</button>
+                <button id="register-button">Register</button>
+            </div>
+        </main>
+    </body>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #3a3a3a;
+
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 50%;
+            height: 70%;
+            background-color: white;
+            border-radius: 7px;
+            box-shadow: 0px 0px 5px 2px black;
+            padding: 32px;
+        }
+
+        h1 {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #3a3a3a;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            outline: none;
+            padding: 0px 0px 5px 5px;
+        }
+
+        button {
+            width: 200px;
+            padding: 7px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            background-color: #3a3a3a;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #register-button {
+            margin-top: 2px;
+        }
+
+        #login-error-msg {
+            width: 200px;
+            text-align: center;
+            margin-top: 5px;
+            padding: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #8a0000;
+            border: 1px solid #8a0000;
+            background-color: #e58f8f;
+            opacity: 0;
+        }
+    </style>
+
+    <script>
+        if (document.cookie.includes('token')) {
+            window.location.href = '/dashboard';
+        }
+
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        const loginButton = document.getElementById('login-button');
+        const registerButton = document.getElementById('register-button');
+
+        loginButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const login = usernameInput.value;
+            const password = passwordInput.value;
+
+            axios({
+                method: 'post',
+                url: '/api/login',
+                data: {
+                    login,
+                    password,
+                },
+            })
+                .then((response) => {
+                    window.location.href = 'dashboard';
+                })
+                .catch((response) => {
+                    loginErrorMsg.style.opacity = 1;
+                });
+        });
+
+        registerButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            window.location.href = '/register';
+        });
+    </script>
+</html>

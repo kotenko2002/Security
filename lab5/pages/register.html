@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Registration</title>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <main>
+            <h1>Registration</h1>
+            <div class="form-container">
+                <form id="register-form">
+                    <input
+                        type="text"
+                        name="email"
+                        id="email-field"
+                        placeholder="Email"
+                    />
+                    <input
+                        type="text"
+                        name="givenname"
+                        id="givenname-field"
+                        placeholder="Given Name"
+                    />
+                    <input
+                        type="text"
+                        name="familyname"
+                        id="familyname-field"
+                        placeholder="Family Name"
+                    />
+                    <input
+                        type="text"
+                        name="name"
+                        id="name-field"
+                        placeholder="Name"
+                    />
+                    <input
+                        type="text"
+                        name="nickname"
+                        id="nickname-field"
+                        placeholder="Nickname"
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        id="password-field"
+                        placeholder="Password"
+                    />
+
+                    <p id="register-error-msg">Invalid input data</p>
+                </form>
+            </div>
+            <div class="buttons">
+                <button id="register-button">Register</button>
+                <button id="back-button">Back to login</button>
+            </div>
+        </main>
+    </body>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #3a3a3a;
+
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 50%;
+            height: 70%;
+            background-color: white;
+            border-radius: 7px;
+            box-shadow: 0px 0px 5px 2px black;
+            padding: 32px;
+        }
+
+        h1 {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #3a3a3a;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            outline: none;
+            padding: 0px 0px 5px 5px;
+        }
+
+        button {
+            width: 200px;
+            padding: 7px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            background-color: #3a3a3a;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #back-button {
+            margin-top: 2px;
+        }
+
+        #register-error-msg {
+            width: 200px;
+            text-align: center;
+            margin-top: 5px;
+            padding: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #8a0000;
+            border: 1px solid #8a0000;
+            background-color: #e58f8f;
+            opacity: 0;
+        }
+    </style>
+
+    <script>
+        if (document.cookie.includes('token')) {
+            window.location.href = '/dashboard';
+        }
+
+        const emailInput = document.getElementById('email-field');
+        const givennameInput = document.getElementById('givenname-field');
+        const familynameInput = document.getElementById('familyname-field');
+        const nicknameInput = document.getElementById('nickname-field');
+        const nameInput = document.getElementById('name-field');
+        const passwordInput = document.getElementById('password-field');
+
+        const registerButton = document.getElementById('register-button');
+        const backButton = document.getElementById('back-button');
+
+        registerButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const email = emailInput.value;
+            const givenname = givennameInput.value;
+            const familyname = familynameInput.value;
+            const nickname = nicknameInput.value;
+            const name = nameInput.value;
+            const password = passwordInput.value;
+
+            axios({
+                method: 'post',
+                url: '/api/register',
+                data: {
+                    email,
+                    givenname,
+                    familyname,
+                    nickname,
+                    name,
+                    password,
+                },
+            })
+                .then((response) => {
+                    const status = response.status;
+                    if (status >= 200 && status < 300) {
+                        window.location.href = '/';
+                    }
+                })
+                .catch((response) => {
+                    registerErrorMsg.style.opacity = 1;
+                    registerErrorMsg.innerHTML += response.request.status;
+                });
+        });
+
+        backButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            window.location.href = '/';
+        });
+    </script>
+</html>

@@ -45,7 +45,7 @@ function createUser(
             console.log('createUserOptions:', error);
         }
 
-        console.log('Created user:', response.statusMessage);
+        console.log('Created user');
         res.status(response.statusCode).send();
     });
 }

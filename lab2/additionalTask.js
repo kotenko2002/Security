@@ -16,11 +16,11 @@ const getTokenRequest = {
 request(getTokenRequest, (error, response, body) => {
   if (error) {
     console.log("error in step #1:", error);
-    return;
   }
 
   const info = JSON.parse(body);
   console.log("step #1:", info);
+  return;
 
   const createUser = {
     method: "POST",

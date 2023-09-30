@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard</title>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <main>
+            <h1>Hi, you have successfully logged in!</h1>
+            <img
+                src="https://static.vecteezy.com/system/resources/previews/005/163/927/original/login-success-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"
+                width="200px"
+            />
+            <button id="logout-button">Logout</button>
+        </main>
+    </body>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #3a3a3a;
+
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            width: 50%;
+            height: 70%;
+            background-color: white;
+            border-radius: 7px;
+            box-shadow: 0px 0px 5px 2px black;
+            padding: 32px;
+        }
+
+        h1 {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        button {
+            width: 200px;
+            padding: 7px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            background-color: #3a3a3a;
+            cursor: pointer;
+            outline: none;
+        }
+    </style>
+
+    <script>
+        const logoutButton = document.getElementById('logout-button');
+
+        logoutButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            axios({
+                method: 'post',
+                url: '/api/logout',
+            }).then((response) => {
+                window.location.href = '/';
+            });
+        });
+    </script>
+</html>
