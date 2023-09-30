@@ -20,10 +20,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //public endpoints
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/pages/index.html'));
+    res.sendFile(path.join(__dirname, '../pages/index.html'));
 });
 app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname + '/pages/register.html'));
+    res.sendFile(path.join(__dirname, '../pages/register.html'));
 });
 app.post('/api/login', (req, res) => login(req, res));
 app.post('/api/register', (req, res) => register(req, res));
@@ -35,7 +35,7 @@ app.use(unauthorizedMiddleware);
 
 //protected endpoints
 app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname + '/pages/dashboard.html'));
+    res.sendFile(path.join(__dirname, '../pages/dashboard.html'));
 });
 app.post('/api/logout', (req, res) => logout(req, res));
 

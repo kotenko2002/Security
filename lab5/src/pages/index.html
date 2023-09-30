@@ -4,57 +4,22 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Registration</title>
+        <title>Login</title>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
     <body>
         <main>
-            <h1>Registration</h1>
+            <h1>Login</h1>
             <div class="form-container">
-                <form id="register-form">
-                    <input
-                        type="text"
-                        name="email"
-                        id="email-field"
-                        placeholder="Email"
-                    />
-                    <input
-                        type="text"
-                        name="givenname"
-                        id="givenname-field"
-                        placeholder="Given Name"
-                    />
-                    <input
-                        type="text"
-                        name="familyname"
-                        id="familyname-field"
-                        placeholder="Family Name"
-                    />
-                    <input
-                        type="text"
-                        name="name"
-                        id="name-field"
-                        placeholder="Name"
-                    />
-                    <input
-                        type="text"
-                        name="nickname"
-                        id="nickname-field"
-                        placeholder="Nickname"
-                    />
-                    <input
-                        type="password"
-                        name="password"
-                        id="password-field"
-                        placeholder="Password"
-                    />
-
-                    <p id="register-error-msg">Invalid input data</p>
+                <form id="login-form">
+                    <input id="username" type="text" placeholder="Username" />
+                    <input id="password" type="text" placeholder="Password" />
+                    <p id="login-error-msg">Invalid username or password</p>
                 </form>
             </div>
             <div class="buttons">
+                <button id="login-button">Login</button>
                 <button id="register-button">Register</button>
-                <button id="back-button">Back to login</button>
             </div>
         </main>
     </body>
@@ -134,11 +99,11 @@
             align-items: center;
         }
 
-        #back-button {
+        #register-button {
             margin-top: 2px;
         }
 
-        #register-error-msg {
+        #login-error-msg {
             width: 200px;
             text-align: center;
             margin-top: 5px;
@@ -153,58 +118,44 @@
     </style>
 
     <script>
+        // document.cookie.includes('token') doesn't work :(
         if (document.cookie.includes('token')) {
             window.location.href = '/dashboard';
         }
 
-        const emailInput = document.getElementById('email-field');
-        const givennameInput = document.getElementById('givenname-field');
-        const familynameInput = document.getElementById('familyname-field');
-        const nicknameInput = document.getElementById('nickname-field');
-        const nameInput = document.getElementById('name-field');
-        const passwordInput = document.getElementById('password-field');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
 
+        const loginButton = document.getElementById('login-button');
         const registerButton = document.getElementById('register-button');
-        const backButton = document.getElementById('back-button');
+        const loginErrorMsg = document.getElementById('login-error-msg');
 
-        registerButton.addEventListener('click', (e) => {
+        loginButton.addEventListener('click', (e) => {
             e.preventDefault();
 
-            const email = emailInput.value;
-            const givenname = givennameInput.value;
-            const familyname = familynameInput.value;
-            const nickname = nicknameInput.value;
-            const name = nameInput.value;
+            const login = usernameInput.value;
             const password = passwordInput.value;
 
             axios({
                 method: 'post',
-                url: '/api/register',
+                url: '/api/login',
                 data: {
-                    email,
-                    givenname,
-                    familyname,
-                    nickname,
-                    name,
+                    login,
                     password,
                 },
             })
                 .then((response) => {
-                    const status = response.status;
-                    if (status >= 200 && status < 300) {
-                        window.location.href = '/';
-                    }
+                    window.location.href = 'dashboard';
                 })
                 .catch((response) => {
-                    registerErrorMsg.style.opacity = 1;
-                    registerErrorMsg.innerHTML += response.request.status;
+                    loginErrorMsg.style.opacity = 1;
                 });
         });
 
-        backButton.addEventListener('click', (e) => {
+        registerButton.addEventListener('click', (e) => {
             e.preventDefault();
 
-            window.location.href = '/';
+            window.location.href = '/register';
         });
     </script>
 </html>
