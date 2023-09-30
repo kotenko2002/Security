@@ -3,7 +3,7 @@ const {
     checkJwtMiddleware,
     unauthorizedMiddleware,
 } = require('./middleware');
-const { login, register, logout } = require('./service');
+const { login, register, logout, getServerToken } = require('./service');
 const path = require('path');
 const request = require('request');
 require('dotenv-expand').expand(require('dotenv').config());
@@ -39,25 +39,8 @@ app.get('/dashboard', (req, res) => {
 });
 app.post('/api/logout', (req, res) => logout(req, res));
 
-request(
-    {
-        method: 'POST',
-        url: `https://${process.env.DOMAIN}/oauth/token`,
-        headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        form: {
-            client_id: process.env.CLIENT_ID,
-            client_secret: process.env.CLIENT_SECRET,
-            audience: process.env.AUDIENCE,
-            grant_type: 'client_credentials',
-        },
-    },
-    (error, response, body) => {
-        if (error) throw new Error(error);
-
-        const info = JSON.parse(body);
-        process.env.ACCESS_TOKEN = info.access_token;
-    }
-);
+getServerToken();
+setInterval(() => getServerToken(), 82800000); //23h
 
 const port = 3000;
 app.listen(port, () => {

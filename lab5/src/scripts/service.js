@@ -29,11 +29,9 @@ const login = (req, res) => {
             const info = JSON.parse(body);
 
             res.cookie('token', info.access_token, {
-                expires: new Date(Date.now() + 86000),
+                expires: new Date(Date.now() + 82800), //23h
                 httpOnly: true,
             });
-            process.env.USER_ACCESS_TOKEN = info.access_token;
-            process.env.USER_REFRESH_TOKEN = info.refresh_token;
 
             res.status(response.statusCode).send();
         }
@@ -79,8 +77,33 @@ const logout = (req, res) => {
     res.status(200).send();
 };
 
+const getServerToken = () => {
+    request(
+        {
+            method: 'POST',
+            url: `https://${process.env.DOMAIN}/oauth/token`,
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            form: {
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET,
+                audience: process.env.AUDIENCE,
+                grant_type: 'client_credentials',
+            },
+        },
+        (error, response, body) => {
+            if (error) {
+                console.log('error while getting server token:', error);
+            }
+
+            const info = JSON.parse(body);
+            process.env.ACCESS_TOKEN = info.access_token;
+        }
+    );
+};
+
 module.exports = {
     login,
     register,
     logout,
+    getServerToken,
 };
