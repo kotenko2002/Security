@@ -10,4 +10,7 @@ lab4/node_modules/
 lab4/.env
 
 lab5/node_modules/
-lab5/.env
+lab5/src/scripts/.env
+
+lab6/node_modules/
+lab6/.env
